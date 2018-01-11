@@ -2,6 +2,7 @@ package errors
 
 import (
 	"fmt"
+	"os"
 	"testing"
 )
 
@@ -9,6 +10,7 @@ func TestFormatStackTrace(t *testing.T) {
 	f := func() StackTrace { return CaptureStackTrace(0) } // line 9
 	g := func() StackTrace { return f() }
 
+	path, _ := os.Getwd()
 	stack := g()[:3]
 
 	tests := []struct {
@@ -21,21 +23,21 @@ func TestFormatStackTrace(t *testing.T) {
 		},
 		{
 			format: "%v",
-			result: `[stack_test.go:9 stack_test.go:10 stack_test.go:12]`,
+			result: `[stack_test.go:10 stack_test.go:11 stack_test.go:14]`,
 		},
 		{
 			format: "%+v",
-			result: `[github.com/segmentio/errors-go/stack_test.go:9 github.com/segmentio/errors-go/stack_test.go:10 github.com/segmentio/errors-go/stack_test.go:12]`,
+			result: `[github.com/segmentio/errors-go/stack_test.go:10 github.com/segmentio/errors-go/stack_test.go:11 github.com/segmentio/errors-go/stack_test.go:14]`,
 		},
 		{
 			format: "%#v",
 			result: `
 github.com/segmentio/errors-go.TestFormatStackTrace.func1
-	/Users/achilleroussel/dev/src/github.com/segmentio/errors-go/stack_test.go:9
+	` + path + `/stack_test.go:10
 github.com/segmentio/errors-go.TestFormatStackTrace.func2
-	/Users/achilleroussel/dev/src/github.com/segmentio/errors-go/stack_test.go:10
+	` + path + `/stack_test.go:11
 github.com/segmentio/errors-go.TestFormatStackTrace
-	/Users/achilleroussel/dev/src/github.com/segmentio/errors-go/stack_test.go:12`,
+	` + path + `/stack_test.go:14`,
 		},
 	}
 
@@ -51,7 +53,7 @@ github.com/segmentio/errors-go.TestFormatStackTrace
 }
 
 func TestFormatStackFrame(t *testing.T) {
-	f := func() StackTrace { return CaptureStackTrace(0) } // line 54
+	f := func() StackTrace { return CaptureStackTrace(0) } // line 56
 	g := func() StackTrace { return f() }
 
 	stack := g()[:3]
@@ -69,7 +71,7 @@ func TestFormatStackFrame(t *testing.T) {
 		{
 			args:   []interface{}{stack[0]},
 			format: "%d",
-			result: `54`,
+			result: `56`,
 		},
 		{
 			args:   []interface{}{stack[0]},
@@ -89,17 +91,17 @@ func TestFormatStackFrame(t *testing.T) {
 		{
 			args:   []interface{}{stack[0], stack[0], stack[0]},
 			format: "%s:%d:%n",
-			result: `stack_test.go:54:TestFormatStackFrame.func1`,
+			result: `stack_test.go:56:TestFormatStackFrame.func1`,
 		},
 		{
 			args:   []interface{}{stack[1], stack[1], stack[1]},
 			format: "%s:%d:%n",
-			result: `stack_test.go:55:TestFormatStackFrame.func2`,
+			result: `stack_test.go:57:TestFormatStackFrame.func2`,
 		},
 		{
 			args:   []interface{}{stack[2], stack[2], stack[2]},
 			format: "%s:%d:%n",
-			result: `stack_test.go:57:TestFormatStackFrame`,
+			result: `stack_test.go:59:TestFormatStackFrame`,
 		},
 		{
 			args:   []interface{}{stack[0]},
@@ -115,18 +117,18 @@ func TestFormatStackFrame(t *testing.T) {
 		{
 			args:   []interface{}{stack[0]},
 			format: "%v",
-			result: `stack_test.go:54`,
+			result: `stack_test.go:56`,
 		},
 		{
 			args:   []interface{}{stack[0]},
 			format: "%+v",
-			result: `github.com/segmentio/errors-go/stack_test.go:54`,
+			result: `github.com/segmentio/errors-go/stack_test.go:56`,
 		},
 		{
 			args:   []interface{}{stack[0]},
 			format: "%#v",
 			result: `github.com/segmentio/errors-go.TestFormatStackFrame.func1
-	/Users/achilleroussel/dev/src/github.com/segmentio/errors-go/stack_test.go:54`,
+	/Users/achilleroussel/dev/src/github.com/segmentio/errors-go/stack_test.go:56`,
 		},
 
 		{
