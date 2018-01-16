@@ -201,10 +201,21 @@ func TestFormatFrameAddress(t *testing.T) {
 	}
 }
 
-var testInitializing bool
+var (
+	testGlobalStackTrace StackTrace
+	testInitializing     bool
+)
 
 func TestInitializing(t *testing.T) {
-	CaptureStackTrace(0)
+	testLocalStackTrace := CaptureStackTrace(0)
+
+	if len(testGlobalStackTrace) != 0 {
+		t.Error("before initialization, stack traces must be empty")
+	}
+
+	if len(testLocalStackTrace) == 0 {
+		t.Error("after initialization, stack traces must not be empty")
+	}
 
 	if !testInitializing {
 		t.Error("the initializing function did not detect that it was called from the package's init function")
@@ -216,7 +227,7 @@ func TestInitializing(t *testing.T) {
 }
 
 func init() {
-	CaptureStackTrace(0)
+	testGlobalStackTrace = CaptureStackTrace(0)
 	testInitializing = initializing()
 }
 
