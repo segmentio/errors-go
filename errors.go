@@ -362,7 +362,11 @@ func Tags(err error) []Tag {
 	return deepAppendTags(nil, err)
 }
 
-func inspect(err error) (msgs []string, types []string, tags []Tag, stacks []StackTrace, causes []error) {
+// Inspect extract and returns properties of err.
+//
+// The function follows a straight path on the error graph, stopping when it
+// finds an error that doesn't have a single cause (either zero or many).
+func Inspect(err error) (msgs []string, types []string, tags []Tag, stacks []StackTrace, causes []error) {
 	for err != nil {
 		types = appendTypes(types, err)
 		tags = appendTags(tags, err)
