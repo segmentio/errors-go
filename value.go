@@ -26,7 +26,7 @@ func ValueOf(err error) Value {
 		return Value{}
 	}
 
-	msgs, types, tags, stacks, causes := inspect(err)
+	msgs, types, tags, stacks, causes := Inspect(err)
 
 	v := Value{
 		Message: strings.Join(msgs, ": "),

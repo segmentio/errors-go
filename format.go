@@ -60,7 +60,7 @@ type formatter struct {
 }
 
 func (f *formatter) format(fctx formatterContext, err error) {
-	msgs, types, tags, stacks, causes := inspect(err)
+	msgs, types, tags, stacks, causes := Inspect(err)
 
 	if len(msgs) == 0 {
 		msgs = []string{"."}
