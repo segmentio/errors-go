@@ -6,6 +6,7 @@ import (
 	"path"
 	"runtime"
 	"strings"
+	"sync/atomic"
 )
 
 // Frame represents a program counter inside a stack frame.
@@ -163,6 +164,19 @@ func longFuncName(name string) string {
 func CaptureStackTrace(skip int) StackTrace {
 	frames := make([]uintptr, 100)
 	length := runtime.Callers(skip+2, frames[:])
+
+	if init := initializing(); init {
+		for _, f := range frames {
+			if init = strings.HasPrefix(shortFuncName(Frame(f).name()), "init."); init {
+				break
+			}
+		}
+		if init {
+			return nil
+		}
+		completeInitialization()
+	}
+
 	return makeStackTrace(frames[:length])
 }
 
@@ -172,4 +186,15 @@ func makeStackTrace(frames []uintptr) StackTrace {
 		stackTrace[i] = Frame(pc)
 	}
 	return stackTrace
+}
+
+// Atomic variable used to check if the initialization phase is complete, so
+var initialized uint32
+
+func initializing() bool {
+	return atomic.LoadUint32(&initialized) == 0
+}
+
+func completeInitialization() {
+	atomic.StoreUint32(&initialized, 1)
 }

@@ -201,6 +201,25 @@ func TestFormatFrameAddress(t *testing.T) {
 	}
 }
 
+var testInitializing bool
+
+func TestInitializing(t *testing.T) {
+	CaptureStackTrace(0)
+
+	if !testInitializing {
+		t.Error("the initializing function did not detect that it was called from the package's init function")
+	}
+
+	if initializing() {
+		t.Error("the initializing function misakenly assumed that it was called from the package's init function")
+	}
+}
+
+func init() {
+	CaptureStackTrace(0)
+	testInitializing = initializing()
+}
+
 func getwd() string {
 	path, _ := os.Getwd()
 	return path
