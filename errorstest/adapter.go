@@ -2,7 +2,6 @@ package errorstest
 
 import (
 	"fmt"
-	"reflect"
 	"testing"
 
 	errors "github.com/segmentio/errors-go"
@@ -31,13 +30,13 @@ func TestAdapter(t *testing.T, a errors.Adapter, tests ...AdapterTest) {
 				}
 			}
 
-			if types := errors.Types(err); !reflect.DeepEqual(types, test.Types) {
+			if types := errors.Types(err); !typesEqual(types, test.Types) {
 				t.Error("types mismatch")
 				t.Log("expected:", test.Types)
 				t.Log("found:   ", types)
 			}
 
-			if tags := errors.Tags(err); !reflect.DeepEqual(tags, test.Tags) {
+			if tags := errors.Tags(err); !tagsEqual(tags, test.Tags) {
 				t.Error("tags mismatch")
 				t.Log("expected:", test.Tags)
 				t.Log("found:   ", tags)
@@ -78,4 +77,28 @@ func message(err error) string {
 		return e.Message()
 	}
 	return ""
+}
+
+func typesEqual(t1, t2 []string) bool {
+	if len(t1) != len(t2) {
+		return false
+	}
+	for i := range t1 {
+		if t1[i] != t2[i] {
+			return false
+		}
+	}
+	return true
+}
+
+func tagsEqual(t1, t2 []errors.Tag) bool {
+	if len(t1) != len(t2) {
+		return false
+	}
+	for i := range t1 {
+		if t1[i] != t2[i] {
+			return false
+		}
+	}
+	return true
 }

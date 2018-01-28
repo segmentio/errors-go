@@ -53,7 +53,7 @@ func TestAdapt(t *testing.T) {
 
 		errorstest.AdapterTest{
 			Error: &net.DNSError{IsTimeout: true},
-			Types: []string{"Timeout", "Unreachable"},
+			Types: []string{"Temporary", "Timeout", "Unreachable"},
 		},
 
 		errorstest.AdapterTest{
