@@ -5,6 +5,12 @@ import (
 	"github.com/twitchtv/twirp"
 )
 
+// Adapt checks the type of err is a twirp error, and adapts it to make error
+// types discoverable using the errors.Is function.
+//
+// This function is automatically installed as a global adapter when importing
+// the neterrors package, a program likely should use errors.Adapt instead of
+// calling this adapter directly.
 func Adapt(err error) (error, bool) {
 	if e, ok := err.(twirp.Error); ok {
 		return &twirpError{cause: e}, true
