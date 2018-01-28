@@ -20,7 +20,7 @@ func New(err error) twirp.Error {
 	msgs, types, tags, _, _ := errors.Inspect(err)
 
 	for _, typ := range types {
-		switch code := twirp.ErrorCode(typ); code {
+		switch typ {
 		case "Canceled":
 			return newError(twirp.Canceled, msgs, tags)
 
@@ -71,6 +71,22 @@ func New(err error) twirp.Error {
 
 		case "DataLoss":
 			return newError(twirp.DataLoss, msgs, tags)
+		}
+	}
+
+	for _, typ := range types {
+		switch typ {
+		case "Validation":
+			return newError(twirp.InvalidArgument, msgs, tags)
+
+		case "Timeout":
+			return newError(twirp.DeadlineExceeded, msgs, tags)
+
+		case "Throttled":
+			return newError(twirp.ResourceExhausted, msgs, tags)
+
+		case "Conflict":
+			return newError(twirp.AlreadyExists, msgs, tags)
 		}
 	}
 

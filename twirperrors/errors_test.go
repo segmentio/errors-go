@@ -2,6 +2,7 @@ package twirperrors
 
 import (
 	"reflect"
+	"strings"
 	"testing"
 
 	errors "github.com/segmentio/errors-go"
@@ -99,6 +100,26 @@ func TestNew(t *testing.T) {
 		},
 
 		{
+			types: []string{"Validation"},
+			code:  twirp.InvalidArgument,
+		},
+
+		{
+			types: []string{"Timeout"},
+			code:  twirp.DeadlineExceeded,
+		},
+
+		{
+			types: []string{"Throttled"},
+			code:  twirp.ResourceExhausted,
+		},
+
+		{
+			types: []string{"Conflict"},
+			code:  twirp.AlreadyExists,
+		},
+
+		{
 			types: []string{"Whatever"},
 			code:  twirp.Unknown,
 		},
@@ -116,7 +137,7 @@ func TestNew(t *testing.T) {
 	})
 
 	for _, test := range tests {
-		t.Run(string(test.code), func(t *testing.T) {
+		t.Run(strings.Join(test.types, ","), func(t *testing.T) {
 			twerr := New(
 				errors.WithTags(
 					errors.WithTypes(errors.New("oops"), test.types...),
