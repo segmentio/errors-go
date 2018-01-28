@@ -136,6 +136,15 @@ func TestNew(t *testing.T) {
 		}
 	})
 
+	t.Run("twirp.Error", func(t *testing.T) {
+		twerr1 := twirp.NewError(twirp.Canceled, "")
+		twerr2 := New(twerr1)
+
+		if twerr1 != twerr2 {
+			t.Error("callign New on a twirp.Error did not return the same error")
+		}
+	})
+
 	for _, test := range tests {
 		t.Run(strings.Join(test.types, ","), func(t *testing.T) {
 			twerr := New(

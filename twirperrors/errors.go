@@ -17,6 +17,10 @@ func New(err error) twirp.Error {
 		return nil
 	}
 
+	if twerr, ok := err.(twirp.Error); ok {
+		return twerr
+	}
+
 	msgs, types, tags, _, _ := errors.Inspect(err)
 
 	for _, typ := range types {
