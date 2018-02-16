@@ -333,10 +333,10 @@ func TestNew(t *testing.T) {
 			}
 
 			testTags := []errors.Tag{
-				{"host", "localhost"},
-				{"method", "GET"},
-				{"path", "/"},
-				{"scheme", "https"},
+				errors.T("host", "localhost"),
+				errors.T("method", "GET"),
+				errors.T("path", "/"),
+				errors.T("scheme", "https"),
 			}
 
 			err := New(res)

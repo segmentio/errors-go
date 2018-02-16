@@ -171,7 +171,8 @@ func TestInvalidFrame(t *testing.T) {
 		t.Errorf("source function of an invalid frame must be \"\", got %q", fn)
 	}
 
-	if s := fmt.Sprintf("%#s", f); s != "(unknown)\n\t0x0" {
+	format := "%#s" // defeat go vet
+	if s := fmt.Sprintf(format, f); s != "(unknown)\n\t0x0" {
 		t.Error("bad string representation of invalid frame:", s)
 	}
 }

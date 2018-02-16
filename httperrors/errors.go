@@ -97,10 +97,10 @@ func newHTTPError(res *http.Response, stack errors.StackTrace) *httpError {
 		}
 
 		e.tags = []errors.Tag{
-			{"method", e.method},
-			{"scheme", e.scheme},
-			{"host", e.host},
-			{"path", e.path},
+			errors.T("method", e.method),
+			errors.T("scheme", e.scheme),
+			errors.T("host", e.host),
+			errors.T("path", e.path),
 		}
 	}
 
