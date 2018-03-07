@@ -332,7 +332,7 @@ type errorWithNilCause struct{}
 func (*errorWithNilCause) Error() string { return "" }
 func (*errorWithNilCause) Cause() error  { return nil }
 
-func TestLookupTags(t *testing.T) {
+func TestLookupTag(t *testing.T) {
 	taggedErr := WithTags(errors.New("tagged"), T("key", "value1"))
 
 	tests := []struct {
