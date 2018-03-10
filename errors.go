@@ -362,6 +362,19 @@ func Tags(err error) []Tag {
 	return deepAppendTags(nil, err)
 }
 
+// LookupTag returns value for a given tag name. Returns empty string if tag wasn't found.
+// If multiple tags found by that name, the most recent value is used.
+func LookupTag(err error, name string) string {
+	var result string
+	for _, tag := range deepAppendTags(nil, err) {
+		if tag.Name == name {
+			result = tag.Value
+		}
+	}
+
+	return result
+}
+
 // Inspect extract and returns properties of err.
 //
 // The function follows a straight path on the error graph, stopping when it

@@ -331,3 +331,42 @@ type errorWithNilCause struct{}
 
 func (*errorWithNilCause) Error() string { return "" }
 func (*errorWithNilCause) Cause() error  { return nil }
+
+func TestLookupTag(t *testing.T) {
+	taggedErr := WithTags(errors.New("tagged"), T("key", "value1"))
+
+	tests := []struct {
+		err    error
+		result string
+	}{
+		{
+			err: nil,
+		},
+		{
+			err: errors.New("foreign"),
+		},
+		{
+			err:    taggedErr,
+			result: "value1",
+		},
+		{
+			err:    WithTags(Wrap(taggedErr, "double"), T("key", "value2")),
+			result: "value2",
+		},
+	}
+	for _, test := range tests {
+		var subtestName string
+		if test.err == nil {
+			subtestName = "<nil>"
+		} else {
+			subtestName = test.err.Error()
+		}
+		t.Run(subtestName, func(t *testing.T) {
+			if actual := LookupTag(test.err, "key"); actual != test.result {
+				t.Error("bad result:")
+				t.Logf("expected: %#v", test.result)
+				t.Logf("found:    %#v", actual)
+			}
+		})
+	}
+}
