@@ -300,7 +300,7 @@ func Causes(err error) []error {
 //
 // This model has been used in the standard library where some errors implement
 // the Temporary and Timeout methods to give the program more details about the
-// reason the error occured and the way it should be handled.
+// reason the error occurred and the way it should be handled.
 //
 // Here is an example of using the Is function:
 //

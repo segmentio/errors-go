@@ -14,7 +14,7 @@ type Adapter interface {
 // makes it possible to use simple functions as error adapters.
 type AdapterFunc func(error) (error, bool)
 
-// Adapt satsifies the Adapter interface, calls f.
+// Adapt satisfies the Adapter interface, calls f.
 func (f AdapterFunc) Adapt(err error) (error, bool) { return f(err) }
 
 // Adapt adapts err using the registered adapters.
