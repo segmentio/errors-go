@@ -22,8 +22,8 @@ This allows the program to *ask questions* about the error value it received,
 like whether or not it's a temporary error, or if it happened because of a
 timeout (because the error type exposes `Temporary() bool` and `Timeout() bool`
 methods).
-This approach offers strong decoupling between components of a pgroam and is one
-of the pillar concepts that this package is built uppon.
+This approach offers strong decoupling between components of a program and is one
+of the pillar concepts that this package is built upon.
 
 Another limitation of carrying a single error value is that it doesn't allow
 layers of abstractions to add and carry context about the consequences of an
@@ -39,7 +39,7 @@ narrowed to solving a single aspect of error management.
 
 This is where the `errors-go` package comes into play. It is built to be a
 drop-in replacement for `pkg/errors` while offering a wider set of error
-mamangement tools that we wished we had countless times in order to build
+management tools that we wished we had countless times in order to build
 software that is more robust, expressive, and maintainable.
 
 ## Types
@@ -119,7 +119,7 @@ other attributes), a program can retrieve the original error by using the
 `errors.Cause(error) error` function. This mechanism is identical to what is
 done in the [`github.com/pkg/errors`](https://github.com/pkg/errors) package
 and is useful when a program needs to compare the original error value against
-some *contant* like `io.EOF` for example.
+some *constant* like `io.EOF` for example.
 
 However, it is common in Go to end up with more than one cause for an error.
 When a program spawns multiple goroutine to do I/O operations in parallel, some
