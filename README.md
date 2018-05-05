@@ -30,7 +30,7 @@ layers of abstractions to add and carry context about the consequences of an
 error. When `io.ErrUnexpectedEOF` is returned by a low-level I/O routine, the
 next abstraction layer can either propagate the error, or return a different
 error value, the former gives no information about the consequence of the error,
-the latter looses information of what the original error was.
+the latter loses information of what the original error was.
 
 Packages like [github.com/pkg/errors](https://github.com/pkg/errors) attempt to
 provide more powerful tools to compose errors and aggregate context about the
