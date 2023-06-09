@@ -1,5 +1,8 @@
 # errors-go [![CircleCI](https://circleci.com/gh/segmentio/errors-go.svg?style=shield)](https://circleci.com/gh/segmentio/errors-go) [![Go Report Card](https://goreportcard.com/badge/github.com/segmentio/errors-go)](https://goreportcard.com/report/github.com/segmentio/errors-go) [![GoDoc](https://godoc.org/github.com/segmentio/errors-go?status.svg)](https://godoc.org/github.com/segmentio/errors-go)
 
+> **Note**  
+> Segment has paused maintenance on this project, but may return it to an active status in the future. Issues and pull requests from external contributors are not being considered, although internal contributions may appear from time to time. The project remains available under its open source license for anyone to use.
+
 ## Motivations
 
 Error management in Go is very flexible, the builtin `error` interface only
